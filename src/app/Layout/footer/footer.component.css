@@ -1,0 +1,16 @@
+.footer-section {
+    background-color: lightgray;
+    /* padding: 16px 0; Adjust padding for visual appeal */
+  }
+  
+  .footer-toolbar {
+    background-color: lightgray; /* Matches the section background */
+    /* box-shadow: none; Remove the shadow for a flat design */
+  }
+  
+  .copyright-text {
+    color: black; /* Primary color for text */
+    font-size: 14px; 
+    text-align: center;
+  }
+  

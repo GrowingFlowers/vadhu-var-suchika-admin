@@ -1,0 +1,58 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+        <!-- Show toggle button only on small and extra small screens -->
+        <button mat-icon-button (click)="sidenav.toggle()" fxShow fxHide.gt-sm>
+            <mat-icon>menu</mat-icon>
+        </button>
+        <span class="logo-text">VVS Admin</span>
+        <span class="menu-spacer"></span>
+        
+        <!-- Menu items hidden on small screens, shown on medium and larger -->
+        <div fxShow fxHide.lt-md fxLayout="row" fxLayoutGap="10px">
+            <a routerLink="/Agent"routerLinkActive="active-link" mat-button class="nav-item">Agent</a>
+            <a routerLink="/profile-verifier" routerLinkActive="active-link" mat-button class="nav-item">Profile Verifier</a>
+            <a routerLink="/authorization" routerLinkActive="active-link" mat-button class="nav-item">Authorization</a>
+        </div>
+        
+        <!-- Profile Dropdown -->
+        <div fxLayout="row" fxLayoutAlign="end center" class="profile-dropdown" fxHide.lt-md>
+            <button mat-button [matMenuTriggerFor]="profileMenu">
+                <mat-icon>account_circle</mat-icon> Profile
+            </button>
+            <mat-menu #profileMenu="matMenu">
+                <button mat-menu-item routerLink="/profile">View Profile</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
+        </div>
+        
+        <!-- Profile Dropdown on small screens -->
+        <div fxHide.gt-sm>
+            <button mat-icon-button [matMenuTriggerFor]="profileMenuSmall">
+                <mat-icon>account_circle</mat-icon>
+            </button>
+            <mat-menu #profileMenuSmall="matMenu">
+                <button mat-menu-item routerLink="/profile">Profile</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
+        </div>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-sidenav-container class="h-90">
+    <mat-sidenav #sidenav mode="over" fxLayout="column">
+        <mat-nav-list>
+            <a routerLink="/Agent" routerLinkActive="active-link" (click)="sidenav.toggle()" mat-list-item class="nav-item">Agent</a>
+            <a routerLink="/profile-verifier" routerLinkActive="active-link" (click)="sidenav.toggle()" mat-list-item class="nav-item">Profile Verifier</a>
+            <a routerLink="/authorization" routerLinkActive="active-link" (click)="sidenav.toggle()" mat-list-item class="nav-item">Authorization</a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content">
+        <!-- Dynamic content displayed via Router Outlet -->
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<div>
+    <app-footer></app-footer>
+  </div>

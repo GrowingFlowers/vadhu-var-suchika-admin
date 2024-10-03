@@ -1,0 +1,36 @@
+.login-wrapper {
+    height: 100vh;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+  }
+  
+  .login-card {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .login-title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .login-actions {
+    margin-top: 20px;
+  }
+  
+  .login-btn {
+    width: 100%;
+    padding: 10px;
+  }
+  
+  .forgot-password {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+  }
+  
