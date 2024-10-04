@@ -1,1 +1,15 @@
-<p>profile-verifier works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="text-end">
+                <button mat-raised-button>Add Profile Verifiy</button>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="mt-5">
+            <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" (edit)="onEdit($event)"
+            (delete)="onDelete($event)"></app-table>
+        </div>
+        </div>
+    </div>
+</div>
