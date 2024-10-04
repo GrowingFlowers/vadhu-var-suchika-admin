@@ -8,11 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
 
 @Component({
   selector: 'app-reusable-dialogs',
   standalone: true,
-  imports: [MatFormFieldModule,ReactiveFormsModule,CommonModule,MatSelectModule,MatDialogModule, MatInputModule,MatButtonModule,MatCardModule,FlexLayoutModule],
+  imports: [MatFormFieldModule,ReactiveFormsModule,CommonModule,MatSelectModule,MatDialogModule, MatInputModule,MatButtonModule,MatCardModule,FlexLayoutModule,MatDatepickerModule],
   templateUrl: './reusable-dialogs.component.html',
   styleUrl: './reusable-dialogs.component.css'
 })
@@ -42,6 +44,10 @@ export class ReusableDialogsComponent {
       }
       if (field.inputType === 'email') {
         validations.push(Validators.email);
+      }
+
+      if(field.inputType === 'mobileNumber'){
+        validations.push(Validators.pattern('^[0-9]{10}$'));
       }
 
       formGroupConfig[field.name] = ['', validations];

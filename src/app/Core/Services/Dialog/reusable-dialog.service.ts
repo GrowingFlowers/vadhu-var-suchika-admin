@@ -7,12 +7,14 @@ import { ReusableDialogsComponent } from '../../../Shared/reusable-dialogs/reusa
 })
 export class ReusableDialogService {
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog) { }
 
-  openDialog(title: string, fields: any[], formValues: any = {}) {
+  openDialog(title: string, fields: any[]) {
     return this.dialog.open(ReusableDialogsComponent, {
-      width: '400px',
-      data: { title, fields, formValues }
+      width: '600px', // Set width for medium size
+      maxWidth: '90vw', // Ensures responsiveness on smaller screens
+      autoFocus: false,
+      data: { title, fields }
     }).afterClosed();
   }
 }

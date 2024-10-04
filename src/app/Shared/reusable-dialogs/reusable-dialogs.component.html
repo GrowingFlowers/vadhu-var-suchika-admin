@@ -1,33 +1,68 @@
-<h2 mat-dialog-title class="dialog-title">{{ title }}</h2>
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="dialogForm" fxLayout="column" class="mt-1">
 
-<mat-card class="dialog-card">
-  <form [formGroup]="dialogForm" fxLayout="column" fxLayoutGap="16px">
-    
-    <!-- Dynamic Fields -->
-    <ng-container *ngFor="let field of fields">
-      
-      <!-- Input Field -->
-      <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'input'" fxFlex>
-        <mat-label>{{ field.label }}</mat-label>
-        <input matInput [formControlName]="field.name" [type]="field.inputType" [placeholder]="field.placeholder">
-      </mat-form-field>
+        <!-- Dynamic Fields -->
+        <ng-container *ngFor="let field of fields">
 
-      <!-- Select Field -->
-      <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'select'" fxFlex>
-        <mat-label>{{ field.label }}</mat-label>
-        <mat-select [formControlName]="field.name">
-          <mat-option *ngFor="let option of field.options" [value]="option.value">
-            {{ option.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    
-    </ng-container>
-  </form>
-</mat-card>
+            <!-- Input Field -->
+            <mat-form-field appearance="outline" class="full-width"
+                *ngIf="field.type === 'input' && field.inputType !== 'date'" fxFlex>
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [formControlName]="field.name" [type]="field.inputType"
+                    [placeholder]="field.placeholder">
+                <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                    {{ field.placeholder }}
+                </mat-error>
+                <mat-error *ngIf="dialogForm.get(field.name)?.hasError('pattern')">
+                    Please enter a valid 10-digit mobile number.
+                </mat-error>
+            </mat-form-field>
 
-<!-- Action Buttons -->
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" class="dialog-actions">
-  <button mat-stroked-button (click)="onCancel()" color="warn">Cancel</button>
-  <button mat-raised-button color="primary" [mat-dialog-close]="dialogForm.value" [disabled]="!dialogForm.valid">Submit</button>
-</div>
+            <!-- Text Area Field -->
+            <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'textarea'" fxFlex>
+                <mat-label>{{ field.label }}</mat-label>
+                <textarea matInput [formControlName]="field.name" [type]="field.inputType"
+                    [placeholder]="field.placeholder"></textarea>
+                <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                    {{ field.placeholder }}
+                </mat-error>
+            </mat-form-field>
+
+            <!-- Date Field -->
+            <mat-form-field appearance="outline" class="full-width"
+                *ngIf="field.type === 'input' && field.inputType === 'date'" fxFlex>
+                <mat-label>{{ field.label }}</mat-label>
+                <input matInput [matDatepicker]="picker" [formControlName]="field.name"
+                    [placeholder]="field.placeholder">
+                <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+
+                <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                    {{ field.placeholder }}
+                </mat-error>
+            </mat-form-field>
+
+
+            <!-- Select Field -->
+            <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'select'" fxFlex>
+                <mat-label>{{ field.label }}</mat-label>
+                <mat-select [formControlName]="field.name">
+                    <mat-option *ngFor="let option of field.options" [value]="option.value">
+                        {{ option.label }}
+                    </mat-option>
+                </mat-select>
+
+                <!-- <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                    {{ field.placeholder }}
+                </mat-error>  -->
+            </mat-form-field>
+
+        </ng-container>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="onCancel()" color="warn">Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]="dialogForm.value"
+        [disabled]="!dialogForm.valid">Submit</button>
+</mat-dialog-actions>
