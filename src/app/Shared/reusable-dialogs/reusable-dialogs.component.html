@@ -1,0 +1,33 @@
+<h2 mat-dialog-title class="dialog-title">{{ title }}</h2>
+
+<mat-card class="dialog-card">
+  <form [formGroup]="dialogForm" fxLayout="column" fxLayoutGap="16px">
+    
+    <!-- Dynamic Fields -->
+    <ng-container *ngFor="let field of fields">
+      
+      <!-- Input Field -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'input'" fxFlex>
+        <mat-label>{{ field.label }}</mat-label>
+        <input matInput [formControlName]="field.name" [type]="field.inputType" [placeholder]="field.placeholder">
+      </mat-form-field>
+
+      <!-- Select Field -->
+      <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'select'" fxFlex>
+        <mat-label>{{ field.label }}</mat-label>
+        <mat-select [formControlName]="field.name">
+          <mat-option *ngFor="let option of field.options" [value]="option.value">
+            {{ option.label }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    
+    </ng-container>
+  </form>
+</mat-card>
+
+<!-- Action Buttons -->
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center" class="dialog-actions">
+  <button mat-stroked-button (click)="onCancel()" color="warn">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="dialogForm.value" [disabled]="!dialogForm.valid">Submit</button>
+</div>
