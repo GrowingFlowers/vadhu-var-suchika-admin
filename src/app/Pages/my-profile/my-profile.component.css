@@ -1,0 +1,10 @@
+mat-icon{
+    font-size: 100px;
+    height: 100px;
+    width: 100px;
+}
+
+
+.mat-card {
+    width: 50%;                    /* Adjust width as needed */
+}

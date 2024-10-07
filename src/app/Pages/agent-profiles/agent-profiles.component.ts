@@ -4,7 +4,10 @@ import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialo
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Agent } from '../../Core/Interfaces/agent';
 import { TableComponent } from "../../Shared/table/table.component";
-
+interface TableColumn {
+  key: string;
+  displayName: string;
+}
 @Component({
   selector: 'app-agent-profiles',
   standalone: true,
@@ -14,7 +17,14 @@ import { TableComponent } from "../../Shared/table/table.component";
 })
 export class AgentProfilesComponent implements OnInit {
 
-  displayedColumns: string[] = ['firstName','lastName', 'email', 'address','mobileNumber', 'dateJoin'];
+  displayedColumns: TableColumn[] = [
+    {key:'firstName' ,displayName:'First Name'},
+    {key:'lastName' ,displayName:'Last Name'},
+    {key:'email' , displayName:'Email'},
+    {key:'address' ,displayName:'Adderess'},
+    {key:'mobileNumber' ,displayName:'Mobile No'},
+    {key:'dateJoin' ,displayName:'date of joining'},
+];
   
   dataSource:any; 
   constructor(
