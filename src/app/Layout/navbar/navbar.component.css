@@ -23,4 +23,8 @@
     padding: 20px;
     height: 83vh;
   }
+
+  .toolbar-section{
+    background-color: lightgrey !important;
+  }
   

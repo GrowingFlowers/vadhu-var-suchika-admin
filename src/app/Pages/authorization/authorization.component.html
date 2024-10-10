@@ -1,1 +1,29 @@
-<p>authorization works!</p>
+<div fxLayout="column" fxLayoutAlign="center center" class="user-actions-container">
+    <!-- Search Section -->
+    <mat-card class="search-card">
+      <mat-card-title>Search User by Mobile Number</mat-card-title>
+      <mat-card-content>
+        <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Mobile Number</mat-label>
+            <input matInput placeholder="Enter Mobile Number" formControlName="mobileNumber" />
+          </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" [disabled]="searchForm.invalid">Search</button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  
+    <!-- Actions Section -->
+    <mat-card class="actions-card" *ngIf="userFound">
+        <mat-card-title>Actions</mat-card-title>
+        <mat-card-content fxLayout="row">
+          <button mat-raised-button color="primary" (click)="makeAgent()" class="action-button">Make Agent</button>
+          <button mat-raised-button color="accent" (click)="makeProfileVerifier()" class="action-button">Make Profile Verifier</button>
+          <button mat-raised-button color="warn" (click)="removeAgent()" class="action-button">Remove as Agent</button>
+          <button mat-raised-button color="warn" (click)="removeProfileVerifier()" class="action-button">Remove as Profile Verifier</button>
+        </mat-card-content>
+      </mat-card>
+      
+      
+  </div>
+  
