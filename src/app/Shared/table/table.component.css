@@ -1,7 +1,37 @@
+.table-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures the table takes full height if required */
+}
 
+.table-wrapper {
+  overflow-x: auto; /* Enables horizontal scrolling on small screens */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
 
-tr:hover{
-    background-color: lightgray;
+.mat-responsive-table {
+  width: 100%; /* Makes sure the table expands fully */
+  min-width: 600px; /* Ensures proper layout on larger screens */
+  border-collapse: collapse;
+}
+
+tr:hover {
+  background-color: lightgray;
+}
+
+/* Adjustments for mobile view */
+@media (max-width: 768px) {
+  .mat-responsive-table {
+    min-width: auto; /* Allow shrinking on smaller screens */
   }
 
- 
+  th, td {
+    padding: 8px; /* Reduce padding on small screens */
+    font-size: 14px;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+}

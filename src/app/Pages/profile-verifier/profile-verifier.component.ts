@@ -68,7 +68,7 @@ export class ProfileVerifierComponent {
     ];
     
 
-    this.dialogService.openDialog('User Information', fields).subscribe(result => {
+    this.dialogService.openDialog('Profile Verifier Information', fields).subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
       }

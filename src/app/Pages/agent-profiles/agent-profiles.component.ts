@@ -109,7 +109,7 @@ export class AgentProfilesComponent implements OnInit {
     ];
     
 
-    this.dialogService.openDialog('User Information', fields).subscribe(result => {
+    this.dialogService.openDialog('Agent Information', fields).subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
       }

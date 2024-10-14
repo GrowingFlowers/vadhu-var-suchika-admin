@@ -4,18 +4,15 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { TableColumn } from '../../Core/Interfaces/table-column';
 
-export interface TableColumn {
-  key: string;
-  displayName: string;
-  pipe?: string;
-  
-}
+
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator],
+  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator, MatIconModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
