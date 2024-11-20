@@ -6,13 +6,14 @@ import {MatButtonModule} from '@angular/material/button';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { TableColumn } from '../../Core/Interfaces/table-column';
+import { MatCardModule } from '@angular/material/card';
 
 
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator, MatIconModule],
+  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator, MatIconModule,MatCardModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })

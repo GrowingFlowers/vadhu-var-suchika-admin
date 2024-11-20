@@ -11,8 +11,8 @@ export class ReusableDialogService {
 
   openDialog(title: string, fields: any[]) {
     return this.dialog.open(ReusableDialogsComponent, {
-      width: '600px', // Set width for medium size
-      maxWidth: '90vw', // Ensures responsiveness on smaller screens
+      width: '600px', 
+      maxWidth: '90vw', 
       autoFocus: false,
       data: { title, fields }
     }).afterClosed();

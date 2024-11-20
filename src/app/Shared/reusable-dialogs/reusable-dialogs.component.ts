@@ -20,21 +20,20 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 })
 export class ReusableDialogsComponent {
   dialogForm!: FormGroup;
-  title: string;
+  title!: string;
   fields: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ReusableDialogsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    console.log('data', data);
+  ) {  
     
-    this.title = data.title;
-    this.fields = data.fields;
   }
 
   ngOnInit(): void {
+    this.title = this.data.title;
+    this.fields = this.data.fields;
     const formGroupConfig: any = {};
 
     this.fields.forEach(field => {

@@ -39,7 +39,7 @@ export class AgentProfilesComponent implements OnInit {
       address: "123 MG Road, Delhi, India",
       dateOfBirth: "1988-01-12",
       dateJoin: "2022-02-01",
-      mobileNumber: "+91-9876543210"
+      mobileNumber: "9876543210"
     },
     {
       firstName: "Priya",
@@ -48,7 +48,7 @@ export class AgentProfilesComponent implements OnInit {
       address: "456 Brigade Road, Bengaluru, India",
       dateOfBirth: "1993-05-25",
       dateJoin: "2021-07-10",
-      mobileNumber: "+91-9123456789"
+      mobileNumber: "9123456789"
     },
     {
       firstName: "Rajesh",
@@ -57,7 +57,7 @@ export class AgentProfilesComponent implements OnInit {
       address: "789 CG Road, Ahmedabad, India",
       dateOfBirth: "1985-09-19",
       dateJoin: "2020-08-15",
-       mobileNumber: "+91-9988776655"
+       mobileNumber: "9988776655"
     },
     {
       firstName: "Suman",
@@ -66,7 +66,7 @@ export class AgentProfilesComponent implements OnInit {
       address: "321 Marine Drive, Mumbai, India",
       dateOfBirth: "1990-11-04",
       dateJoin: "2023-01-22",
-      mobileNumber: "+91-9123678901"
+      mobileNumber: "9123678901"
     },
     {
       firstName: "Neha",
@@ -75,7 +75,7 @@ export class AgentProfilesComponent implements OnInit {
       address: "654 Park Street, Kolkata, India",
       dateOfBirth: "1995-07-16",
       dateJoin: "2022-03-30",
-      mobileNumber: "+91-9123678901"
+      mobileNumber: "9123678901"
     }
   ];
 

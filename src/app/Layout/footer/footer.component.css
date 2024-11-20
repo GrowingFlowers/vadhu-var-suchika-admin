@@ -1,11 +1,27 @@
   .footer-toolbar {
-    background-color: lightgray; /* Matches the section background */
-    /* box-shadow: none; Remove the shadow for a flat design */
+    background-color: lightgray;
+    /* padding: 15px 0;
+    color: #333; */
+    /* font-size: 1rem; */
   }
   
   .copyright-text {
     color: black; /* Primary color for text */
     font-size: 14px; 
     text-align: center;
+  }
+   
+  .footer-content {
+    width: 100%;
+    text-align: center;
+  }
+  
+  @media (max-width: 600px) {
+    .footer-toolbar {
+      padding: 10px 0;
+    }
+    .copyright-text {
+      font-size: 0.9rem;
+    }
   }
   

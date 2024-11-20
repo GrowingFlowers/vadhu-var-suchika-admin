@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -9,7 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 @Component({
   selector: 'app-authorization',
   standalone: true,
-  imports: [MatCardModule,MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule,CommonModule],
+  imports: [MatCardModule,MatButtonModule, MatFormFieldModule, ReactiveFormsModule, MatInputModule,CommonModule, FlexLayoutModule],
   templateUrl: './authorization.component.html',
   styleUrl: './authorization.component.css'
 })
