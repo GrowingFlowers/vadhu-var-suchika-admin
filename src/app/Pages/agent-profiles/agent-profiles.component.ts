@@ -17,111 +17,127 @@ interface TableColumn {
 })
 export class AgentProfilesComponent implements OnInit {
 
-   agentForm:any;  
+  agentForm: any;
   displayedColumns: TableColumn[] = [
-    {key:'firstName' ,displayName:'First Name'},
-    {key:'lastName' ,displayName:'Last Name'},
-    {key:'email' , displayName:'Email'},
-    {key:'address' ,displayName:'Adderess'},
-    {key:'mobileNumber' ,displayName:'Mobile No'},
-    {key:'dateJoin' ,displayName:'date of joining'},
-];
-  
-  dataSource:any; 
+    { key: 'firstName', displayName: 'First Name' },
+    { key: 'lastName', displayName: 'Last Name' },
+    { key: 'email', displayName: 'Email' },
+    { key: 'address', displayName: 'Adderess' },
+    { key: 'mobileNumber', displayName: 'Mobile No' },
+    { key: 'dateJoin', displayName: 'date of joining' },
+  ];
+
+  fields = [
+    {
+      name: 'firstName', label: 'First Name', type: 'input', inputType: 'text', placeholder: 'Enter your first name', required: true
+    },
+    {
+      name: 'lastName', label: 'Last Name', type: 'input', inputType: 'text', placeholder: 'Enter your last name', required: true
+    },
+    {
+      name: 'mobileNumber', label: 'Mobile Number', type: 'input', inputType: 'text', placeholder: 'Enter your mobile number', required: true
+    },
+    {
+      name: 'address', label: 'Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter address', required: true
+    },
+    {
+      name: 'area', label: 'Area', type: 'input', inputType: 'text', placeholder: 'Enter Area', required: true
+    },
+    {
+      name: 'city', label: 'City', type: 'input', inputType: 'text', placeholder: 'Enter City', required: true
+    },
+    {
+      name: 'contact1', label: 'Contact 1', type: 'input', inputType: 'text', placeholder: 'Enter your valid contact number', required: true
+    },
+    {
+      name: 'contact2', label: 'Contact 2', type: 'input', inputType: 'text', placeholder: 'Enter your valid another contact number', required: true
+    },
+    {
+      name: 'pincode', label: 'Pin Code', type: 'input', inputType: 'text', placeholder: 'Enter valid pincode', required: true
+    },
+    {
+      name: 'country', label: 'Country', type: 'dropdown', options: [], placeholder: 'Select Country', required: true
+    },
+    {
+      name: 'state', label: 'State', type: 'dropdown', options: [], placeholder: 'Select State', required: true, dependsOn: 'country'
+    },
+    {
+      name: 'district', label: 'District', type: 'dropdown', options: [], placeholder: 'Select District', required: true, dependsOn: 'state'
+    },
+    {
+      name: 'taluka', label: 'Taluka', type: 'dropdown', options: [], placeholder: 'Select Taluka', required: true, dependsOn: 'district'
+    },
+  ];
+  dataSource: any;
   constructor(
     private dialogService: ReusableDialogService
-  ){}
+  ) { }
 
-  users:Agent[] = [
+  users: Agent[] = [
     {
-      firstName: "Amit",
-      lastName: "Sharma",
-      email: "amit.sharma@example.com",
-      address: "123 MG Road, Delhi, India",
-      dateOfBirth: "1988-01-12",
-      dateJoin: "2022-02-01",
-      mobileNumber: "9876543210"
+      firstName: "John",
+      lastName: "Doe",
+      mobileNumber: "1234567890",
+      type: "AGENT",
+      agentMobileNumber: "",
+      addressVO: {
+        address1: "123 Main St",
+        address2: "Apt 4B",
+        area: "Downtown",
+        city: "Metropolis",
+        contact1: "1234567890",
+        contact2: "0987654321",
+        destrict: "Central District", // If "district" is the intended term, update the spelling.
+        pinCode: "456789",
+        country: "Fictionland",
+        state: "Capital State",
+        taluka: "West Taluka",
+        type: "Residential",
+      },
     },
     {
-      firstName: "Priya",
-      lastName: "Rao",
-      email: "priya.rao@example.com",
-      address: "456 Brigade Road, Bengaluru, India",
-      dateOfBirth: "1993-05-25",
-      dateJoin: "2021-07-10",
-      mobileNumber: "9123456789"
+      firstName: "Jane",
+      lastName: "Smith",
+      mobileNumber: "0987654321",
+      otp: "5678",
+      type: "Agent",
+      agentMobileNumber: "1122334455",
+      addressVO: {
+        address1: "456 Elm St",
+        address2: "Suite 100",
+        area: "Uptown",
+        city: "Smallville",
+        contact1: "5678901234",
+        contact2: "4321098765",
+        destrict: "North District", // Correct as needed
+        pinCode: "654321",
+        country: "Fictionland",
+        state: "Northern State",
+        taluka: "East Taluka",
+        type: "Commercial",
+      },
     },
-    {
-      firstName: "Rajesh",
-      lastName: "Patel",
-      email: "rajesh.patel@example.com",
-      address: "789 CG Road, Ahmedabad, India",
-      dateOfBirth: "1985-09-19",
-      dateJoin: "2020-08-15",
-       mobileNumber: "9988776655"
-    },
-    {
-      firstName: "Suman",
-      lastName: "Iyer",
-      email: "suman.iyer@example.com",
-      address: "321 Marine Drive, Mumbai, India",
-      dateOfBirth: "1990-11-04",
-      dateJoin: "2023-01-22",
-      mobileNumber: "9123678901"
-    },
-    {
-      firstName: "Neha",
-      lastName: "Verma",
-      email: "neha.verma@example.com",
-      address: "654 Park Street, Kolkata, India",
-      dateOfBirth: "1995-07-16",
-      dateJoin: "2022-03-30",
-      mobileNumber: "9123678901"
-    }
   ];
 
   ngOnInit(): void {
     this.dataSource = this.users
   }
-  
-  openDialog(): void {
-    const fields = [
-      { 
-        name: 'firstName', label: 'First Name', type: 'input', inputType: 'text', placeholder: 'Enter your first name', required: true 
-      },
-      { 
-        name: 'lastName', label: 'Last Name', type: 'input', inputType: 'text', placeholder: 'Enter your last name', required: true
-      },
-      { 
-        name: 'mobileNumber', label: 'Mobile Number', type: 'input', inputType: 'text', placeholder: 'Enter your mobile number', required: true 
-      },
-      {
-        name: 'email', label: 'Email', type: 'input', inputType: 'email', placeholder: 'Enter email', required: true
-      },
-      {
-        name: 'address', label: 'Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter address', required: true
-      },
-      {
-        name: 'dateOfBirth', label: 'Date of Birth', type: 'input', inputType: 'date', placeholder: 'Enter date of birth', required: true
-      },
-      {
-        name: 'joinDate', label: 'Join Date', type: 'input', inputType: 'date', placeholder: 'Enter join date', required: true
-      }
-    ];
-    
 
-    this.dialogService.openDialog('Agent Information', fields,this.agentForm).subscribe(result => {
+  openDialog(): void {
+
+    this.dialogService.openDialog('Agent Information', this.fields,'').subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
       }
     });
   }
 
-  onEdit(event:any){
-    console.log('Edit Event', event);
+  onEdit(value: any) {
+    console.log('Edit Event', value);
+    this.dialogService.openDialog('Edit Agent',this.fields,value)
   }
 
-  onDelete(event:any){
+  onDelete(event: any) {
     console.log('Delete Event', event);
   }
 }
