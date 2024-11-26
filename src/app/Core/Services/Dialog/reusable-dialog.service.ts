@@ -9,12 +9,12 @@ export class ReusableDialogService {
 
   constructor(private dialog: MatDialog) { }
 
-  openDialog(title: string, fields: any[]) {
+  openDialog(title: string, fields: any[],data:any) {
     return this.dialog.open(ReusableDialogsComponent, {
       width: '600px', 
       maxWidth: '90vw', 
       autoFocus: false,
-      data: { title, fields }
+      data: { title, fields,data }
     }).afterClosed();
   }
 }

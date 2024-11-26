@@ -17,6 +17,7 @@ interface TableColumn {
 })
 export class AgentProfilesComponent implements OnInit {
 
+   agentForm:any;  
   displayedColumns: TableColumn[] = [
     {key:'firstName' ,displayName:'First Name'},
     {key:'lastName' ,displayName:'Last Name'},
@@ -109,7 +110,7 @@ export class AgentProfilesComponent implements OnInit {
     ];
     
 
-    this.dialogService.openDialog('Agent Information', fields).subscribe(result => {
+    this.dialogService.openDialog('Agent Information', fields,this.agentForm).subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
       }

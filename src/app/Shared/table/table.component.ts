@@ -7,13 +7,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { TableColumn } from '../../Core/Interfaces/table-column';
 import { MatCardModule } from '@angular/material/card';
+import { ArrayToDateConversionPipe } from '../../Core/Pipe/array-to-date-conversion.pipe';
 
 
 
 @Component({
   selector: 'app-table',
   standalone: true,
-  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator, MatIconModule,MatCardModule],
+  imports: [MatPaginatorModule,MatTableModule,CommonModule,MatButtonModule,MatPaginator, MatIconModule,MatCardModule,ArrayToDateConversionPipe],
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
@@ -44,6 +45,10 @@ export class TableComponent  implements AfterViewInit{
 
   onDelete(element: any) {
     this.delete.emit(element);
+  }
+
+  getNestedValue(element: any, key: string): any {
+    return key.split('.').reduce((obj, prop) => obj?.[prop], element);
   }
 
 

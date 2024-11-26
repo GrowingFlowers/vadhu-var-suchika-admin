@@ -5,37 +5,43 @@
 
         <!-- Dynamic Columns -->
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column.key">
-          <th mat-header-cell *matHeaderCellDef>
+          <th mat-header-cell *matHeaderCellDef class="text-center">
             {{ column.displayName | titlecase }}
           </th>
-          <td mat-cell *matCellDef="let element">
-            {{ element[column.key] }}
+          <td mat-cell *matCellDef="let element" class="text-center">
+            <ng-container *ngIf="column.key === 'createdDate'">
+              {{ getNestedValue(element, column.key) |  arrayToDateConversion | date: 'mediumDate'}}
+            </ng-container>
+            <!-- For other columns, display the value normally -->
+            <ng-container *ngIf="column.key !== 'createdDate'">
+              {{ getNestedValue(element, column.key) }}
+            </ng-container>
           </td>
         </ng-container>
-  
-       <!-- Action Column -->
-       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
-        <td mat-cell *matCellDef="let element" class="text-center action-cell"
-            fxLayout="row" fxLayoutGap="14px" fxLayoutAlign="center center">
-          <button mat-icon-button color="primary" (click)="onEdit(element)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="onDelete(element)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-  
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+          <td mat-cell *matCellDef="let element" class="text-center action-cell" fxLayout="row" fxLayoutGap="14px"
+            fxLayoutAlign="center center">
+            <button mat-icon-button color="primary" (click)="onEdit(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="onDelete(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
         <!-- Header and Row Definitions -->
         <tr mat-header-row *matHeaderRowDef="displayedColumnKeys;sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumnKeys;"></tr>
-  
+
       </table>
     </mat-card>
   </div>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-                 aria-label="Select page" fxFlex="0 1 auto" fxLayoutAlign="center center">
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page" fxFlex="0 1 auto"
+    fxLayoutAlign="center center">
   </mat-paginator>
 </div>
