@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { ProfileVerifierService } from '../../Core/Services/Profile-verifier/profile-verifier.service';
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
 
+
 interface TableColumn {
   key: string;
   displayName: string;
@@ -155,107 +156,7 @@ export class ProfileVerifierComponent implements OnInit {
   }
 
   openDialog(): void {
-    // const fields = [
-    //   {
-    //     name: 'firstName', label: 'First Name', type: 'input', inputType: 'text', placeholder: 'Enter your first name',
-    //     FormControlName: 'firstName',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'lastName', label: 'Last Name', type: 'input', inputType: 'text', placeholder: 'Enter your last name',
-    //     FormControlName: 'lastName',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'mobileNumber', label: 'Mobile Number', type: 'input', inputType: 'text', placeholder: 'Enter your mobile number',
-    //     FormControlName: 'mobileNumber',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'type', label: 'Type', type: 'input', inputType: 'text', placeholder: 'Enter Type', value:'PROFILE_VERIFIER',
-    //     FormControlName: 'type',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'address1', label: 'Address Line 1', type: 'textarea', inputType: 'textarea', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.contact1',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'address2', label: 'Address Line 2', type: 'textarea', inputType: 'textarea', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.address2',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'area', label: 'Area', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.area',
-    //     required: true
-    //   },
-
-    //   {
-    //     name: 'city', label: 'City', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.city',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'contact1', label: 'contact1', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.contact1',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'contact2', label: 'contact2', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.contact2',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'destrict', label: 'destrict', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.destrict',
-    //     required: true
-    //   }, {
-    //     name: 'pinCode', label: 'pinCode', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.pinCode',
-    //     required: true
-    //   }, {
-    //     name: 'country', label: 'country', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.country',
-    //     required: true
-    //   }, {
-    //     name: 'state', label: 'state', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.state',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'taluka', label: 'taluka', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.taluka',
-    //     required: true
-    //   },
-    //   {
-    //     name: 'type', label: 'type', type: 'input', inputType: 'text', placeholder: 'Enter address',
-    //     FormControlName: 'addressVO.type',
-    //     required: true
-    //   },
-
-
-    // ];
-
-    // const formGroup = this.fb.group({});
-    // fields.forEach(field => {
-    //   // If the element exists (editing case), set the field value, otherwise set an empty string
-    //   formGroup.addControl(field.name, new FormControl(element ? element[field.name] : '', field.required ? Validators.required : null));
-    // });
-
-    // this.dialogService.openDialog('Profile Verifier Information', fields).subscribe(result => {
-    //   if (result) {
-    //     console.log('Dialog result:', result);
-    //   }
-    // });
-
-    // If editing an existing profile, pre-fill the form with the existing data
-    // if (element) {
-    //   this.profileForm.patchValue(element);
-    // } else {
-    //   this.profileForm.reset();  // Reset form for new data entry
-    // }
+    
 
     // Open the dialog and pass the form
     this.dialogService.openDialog('Profile Verifier Information', this.fields, this.profileForm).subscribe(value => {
@@ -290,42 +191,36 @@ export class ProfileVerifierComponent implements OnInit {
             alert("Error");
           }
         })
-        // if (element) {
-        //   // Update the existing profile
-        //   Object.assign(element, value);
-        // } else {
-        //   // Add new profile to the list
-        //   this.profileVerifyList.push(value);
-        // }
+       
       }
     });
   }
 
 
   onEdit(element: verifier) {
-    const formValues = {
-      firstName: element.firstName,
-      lastName: element.lastName,
-      mobileNumber: element.mobileNumber,
-      otp: '',  // assuming you want to reset OTP field
-      type: element.type,
-      addressVO: {
-        address1: element.addressVO?.address1 || '',
-        address2: element.addressVO?.address2 || '',
-        area: element.addressVO?.area || '',
-        city: element.addressVO?.city || '',
-        contact1: element.addressVO?.contact1 || '',
-        contact2: element.addressVO?.contact2 || '',
-        destrict: element.addressVO?.destrict || '',
-        pinCode: element.addressVO?.pinCode || '',
-        country: element.addressVO?.country || '',
-        state: element.addressVO?.state || '',
-        taluka: element.addressVO?.taluka || '',
-        type: element.addressVO?.type || ''
-      }
-    };
-    console.log('Opening Dialog with formValues:', formValues); // Debugging the form values
-    this.dialogService.openDialog('Edit Profile Verifier', this.fields, formValues);
+    // const formValues = {
+    //   firstName: element.firstName,
+    //   lastName: element.lastName,
+    //   mobileNumber: element.mobileNumber,
+    //   otp: '',  // assuming you want to reset OTP field
+    //   type: element.type,
+    //   addressVO: {
+    //     address1: element.addressVO?.address1 || '',
+    //     address2: element.addressVO?.address2 || '',
+    //     area: element.addressVO?.area || '',
+    //     city: element.addressVO?.city || '',
+    //     contact1: element.addressVO?.contact1 || '',
+    //     contact2: element.addressVO?.contact2 || '',
+    //     destrict: element.addressVO?.destrict || '',
+    //     pinCode: element.addressVO?.pinCode || '',
+    //     country: element.addressVO?.country || '',
+    //     state: element.addressVO?.state || '',
+    //     taluka: element.addressVO?.taluka || '',
+    //     type: element.addressVO?.type || ''
+    //   }
+    // };
+    // console.log('Opening Dialog with formValues:', formValues); // Debugging the form values
+    this.dialogService.openDialog('Edit Profile Verifier', this.fields, element);
   }
 
 

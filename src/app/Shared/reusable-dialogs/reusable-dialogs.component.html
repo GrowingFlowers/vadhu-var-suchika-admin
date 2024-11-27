@@ -2,12 +2,12 @@
 <mat-dialog-content class="mat-typography">
     <form [formGroup]="dialogForm" fxLayout="column" class="mt-1">
 
-        <!-- Dynamic Fields -->
         <ng-container *ngFor="let field of fields">
 
             <!-- Input Field -->
             <mat-form-field appearance="outline" class="full-width"
-                *ngIf="field.type === 'input' && field.inputType !== 'date'" fxFlex>
+                *ngIf="field.type === 'input' && field.inputType !== 'date'  && field.name !== 'country' && field.name !== 'state' && field.name !== 'district' && field.name !== 'taluka'"
+                fxFlex>
                 <mat-label>{{ field.label }}</mat-label>
                 <input matInput [formControlName]="field.name" [type]="field.inputType"
                     [placeholder]="field.placeholder">
@@ -15,15 +15,14 @@
                     {{ field.placeholder }}
                 </mat-error>
                 <mat-error *ngIf="dialogForm.get(field.name)?.hasError('pattern')">
-                    Please enter a valid 10-digit mobile number.
+                    Please enter a valid value.
                 </mat-error>
             </mat-form-field>
 
             <!-- Text Area Field -->
             <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'textarea'" fxFlex>
                 <mat-label>{{ field.label }}</mat-label>
-                <textarea matInput [formControlName]="field.name" [type]="field.inputType"
-                    [placeholder]="field.placeholder"></textarea>
+                <textarea matInput [formControlName]="field.name" [placeholder]="field.placeholder"></textarea>
                 <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
                     {{ field.placeholder }}
                 </mat-error>
@@ -37,28 +36,76 @@
                     [placeholder]="field.placeholder">
                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-
                 <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
                     {{ field.placeholder }}
                 </mat-error>
             </mat-form-field>
 
-
-            <!-- Select Field -->
-            <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'select'" fxFlex>
+            <!-- Dropdown Field -->
+            <!-- <mat-form-field appearance="outline" class="full-width" *ngIf="field.type === 'dropdown'" fxFlex>
                 <mat-label>{{ field.label }}</mat-label>
                 <mat-select [formControlName]="field.name">
                     <mat-option *ngFor="let option of field.options" [value]="option.value">
                         {{ option.label }}
                     </mat-option>
                 </mat-select>
-
-                <!-- <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
-                    {{ field.placeholder }}
-                </mat-error>  -->
-            </mat-form-field>
+                <mat-error *ngIf="dialogForm.get(field.name)?.hasError('required')">
+                    Please select {{ field.label | lowercase }}
+                </mat-error>
+            </mat-form-field> -->
 
         </ng-container>
+
+        <!-- Dependent Dropdowns -->
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('country')" fxFlex>
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country">
+                <mat-option *ngFor="let option of countryData" [value]="option.value">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="dialogForm.get('country')?.hasError('required')">
+                Please select a country.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('state')" fxFlex>
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state">
+                <mat-option *ngFor="let option of stateData" [value]="option.value">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="dialogForm.get('state')?.hasError('required')">
+                Please select a state.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('district')" fxFlex>
+            <mat-label>District</mat-label>
+            <mat-select formControlName="district">
+                <mat-option *ngFor="let option of districtData" [value]="option.value">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="dialogForm.get('district')?.hasError('required')">
+                Please select a district.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('taluka')" fxFlex>
+            <mat-label>Taluka</mat-label>
+            <mat-select formControlName="taluka">
+                <mat-option *ngFor="let option of talukaData" [value]="option.value">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="dialogForm.get('taluka')?.hasError('required')">
+                Please select a taluka.
+            </mat-error>
+        </mat-form-field>
+
+
     </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

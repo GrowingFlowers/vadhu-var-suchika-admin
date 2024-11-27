@@ -6,6 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideHttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(), 
     provideAnimationsAsync(),
     provideNativeDateAdapter(),
-    provideHttpClient()
+    provideHttpClient(),
+  
   ]
 };
