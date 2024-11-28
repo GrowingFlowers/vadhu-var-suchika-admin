@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialog.service';
 import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Users } from '../../Core/Interfaces/users';
+import { Users } from '../../Core/Interfaces/Users';
 import { UserService } from '../../Core/Services/Users/User.service';
 import { TableColumn } from '../../Core/Interfaces/table-column';
 

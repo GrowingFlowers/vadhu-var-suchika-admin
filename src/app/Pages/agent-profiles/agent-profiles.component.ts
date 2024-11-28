@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TableComponent } from "../../Shared/table/table.component";
 import { TableColumn } from '../../Core/Interfaces/table-column';
 import { UserService } from '../../Core/Services/Users/User.service';
-import { Users } from '../../Core/Interfaces/users';
+import { Users } from '../../Core/Interfaces/Users';
 
 @Component({
   selector: 'app-agent-profiles',
