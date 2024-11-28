@@ -8,15 +8,30 @@
           <th mat-header-cell *matHeaderCellDef class="text-center">
             {{ column.displayName | titlecase }}
           </th>
+
           <td mat-cell *matCellDef="let element" class="text-center">
+            <ng-container [ngSwitch]="column.key">
+              <span *ngSwitchCase="'createdDate'">
+                {{ getNestedValue(element, column.key) | arrayToDateConversion: 'longDate' }}
+              </span>
+              <span *ngSwitchCase="'address1'">
+                {{ getNestedValue(element, column.key) }}
+              </span>
+              <span *ngSwitchDefault>
+                {{ getNestedValue(element, column.key) }}
+              </span>
+            </ng-container>
+          </td>
+          <!-- OLD CODE -->
+          <!-- <td mat-cell *matCellDef="let element" class="text-center">
             <ng-container *ngIf="column.key === 'createdDate'">
               {{ getNestedValue(element, column.key) | arrayToDateConversion :'longDate' }}
             </ng-container>
-            <!-- For other columns, display the value normally -->
+            
             <ng-container *ngIf="column.key !== 'createdDate'">
               {{ getNestedValue(element, column.key) }}
             </ng-container>
-          </td>
+          </td> -->
         </ng-container>
 
         <!-- Action Column -->

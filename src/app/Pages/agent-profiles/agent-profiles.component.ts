@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialog.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { Agent } from '../../Core/Interfaces/agent';
 import { TableComponent } from "../../Shared/table/table.component";
 import { AgentService } from '../../Core/Services/Agent/agent.service';
-interface TableColumn {
-  key: string;
-  displayName: string;
-}
+import { TableColumn } from '../../Core/Interfaces/table-column';
+import { Users } from '../../Core/Interfaces/Users';
+import { UserService } from '../../Core/Services/Users/User.service';
+
 @Component({
   selector: 'app-agent-profiles',
   standalone: true,
@@ -22,10 +21,9 @@ export class AgentProfilesComponent implements OnInit {
   displayedColumns: TableColumn[] = [
     { key: 'firstName', displayName: 'First Name' },
     { key: 'lastName', displayName: 'Last Name' },
-    { key: 'email', displayName: 'Email' },
-    { key: 'address', displayName: 'Adderess' },
+    { key: 'addressVO.address1', displayName: 'Adderess' },
     { key: 'mobileNumber', displayName: 'Mobile No' },
-    { key: 'dateJoin', displayName: 'date of joining' },
+    { key: 'createdDate', displayName: 'Created Date' },
   ];
 
   fields = [
@@ -42,7 +40,7 @@ export class AgentProfilesComponent implements OnInit {
       name: 'address1', label: 'Permant Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter Permant address', required: true
     },
     {
-      name: 'address2', label: 'Current Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter Current address', required: true
+      name: 'address2', label: 'Current Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter Current address'
     },
     {
       name: 'area', label: 'Area', type: 'input', inputType: 'text', placeholder: 'Enter Area', required: true
@@ -54,7 +52,7 @@ export class AgentProfilesComponent implements OnInit {
       name: 'contact1', label: 'Contact 1', type: 'input', inputType: 'text', placeholder: 'Enter your valid contact number', required: true
     },
     {
-      name: 'contact2', label: 'Contact 2', type: 'input', inputType: 'text', placeholder: 'Enter your valid another contact number', required: true
+      name: 'contact2', label: 'Contact 2', type: 'input', inputType: 'text', placeholder: 'Enter your valid another contact number'
     },
     {
       name: 'pincode', label: 'Pin Code', type: 'input', inputType: 'text', placeholder: 'Enter valid pincode', required: true
@@ -72,71 +70,90 @@ export class AgentProfilesComponent implements OnInit {
       name: 'taluka', label: 'Taluka', type: 'dropdown', options: [], placeholder: 'Select Taluka', required: true, dependsOn: 'district'
     },
     {
-      name: 'address_type', label: 'Residentioal Type', type: 'input', inputType: 'text', placeholder: 'Enter Residentioal Type', required: true
+      name: 'type', label: 'Residentioal Type', type: 'input', inputType: 'text', placeholder: 'Enter Residentioal Type', required: true
     },
   ];
   dataSource: any;
+  //dataSource = new MatTableDataSource<Agent>([]);
   constructor(
     private dialogService: ReusableDialogService,
-    private agentService: AgentService
+    private userService: UserService
   ) { }
 
-  users: Agent[] = [
-    {
-      firstName: "John",
-      lastName: "Doe",
-      mobileNumber: "1234567890",
-      type: "AGENT",
-      agentMobileNumber: "",
-      addressVO: {
-        address1: "123 Main St",
-        address2: "Apt 4B",
-        area: "Downtown",
-        city: "Metropolis",
-        contact1: "1234567890",
-        contact2: "0987654321",
-        destrict: "Central District", // If "district" is the intended term, update the spelling.
-        pinCode: "456789",
-        country: "Fictionland",
-        state: "Capital State",
-        taluka: "West Taluka",
-        type: "Residential",
-      },
-    },
-    {
-      firstName: "Jane",
-      lastName: "Smith",
-      mobileNumber: "0987654321",
-      otp: "5678",
-      type: "Agent",
-      agentMobileNumber: "1122334455",
-      addressVO: {
-        address1: "456 Elm St",
-        address2: "Suite 100",
-        area: "Uptown",
-        city: "Smallville",
-        contact1: "5678901234",
-        contact2: "4321098765",
-        destrict: "North District", // Correct as needed
-        pinCode: "654321",
-        country: "Fictionland",
-        state: "Northern State",
-        taluka: "East Taluka",
-        type: "Commercial",
-      },
-    },
-  ];
+  users: Users[] = []
+  // users: Users[] = [
+  //   {
+  //     firstName: "John",
+  //     lastName: "Doe",
+  //     mobileNumber: "1234567890",
+  //     type: "AGENT",
+  //     agentMobileNumber: "",
+  //     addressVO: {
+  //       address1: "123 Main St",
+  //       address2: "Apt 4B",
+  //       area: "Downtown",
+  //       city: "Metropolis",
+  //       contact1: "1234567890",
+  //       contact2: "0987654321",
+  //       destrict: "Central District", // If "district" is the intended term, update the spelling.
+  //       pinCode: "456789",
+  //       country: "Fictionland",
+  //       state: "Capital State",
+  //       taluka: "West Taluka",
+  //       type: "Residential",
+  //     },
+  //   },
+  //   {
+  //     firstName: "Jane",
+  //     lastName: "Smith",
+  //     mobileNumber: "0987654321",
+  //     otp: "5678",
+  //     type: "Agent",
+  //     agentMobileNumber: "1122334455",
+  //     addressVO: {
+  //       address1: "456 Elm St",
+  //       address2: "Suite 100",
+  //       area: "Uptown",
+  //       city: "Smallville",
+  //       contact1: "5678901234",
+  //       contact2: "4321098765",
+  //       destrict: "North District", // Correct as needed
+  //       pinCode: "654321",
+  //       country: "Fictionland",
+  //       state: "Northern State",
+  //       taluka: "East Taluka",
+  //       type: "Commercial",
+  //     },
+  //   },
+  // ];
 
   ngOnInit(): void {
-    this.dataSource = this.users
+    this.getAllUsers()
   }
 
+  getAllUsers() {
+    let mobileNumber = '7276414840';
+    this.userService.getAllUsers(mobileNumber).subscribe((response) => {
+      if (response && response.result?.length > 0) {
+        if (response?.result) {
+          this.dataSource = response.result;
+          console.log(this.dataSource)
+          // this.isSuccess = true;
+          // this.getSuccessMessage('User Data Fetch Successfully','success');
+        }
+      } else {
+        // this.getSuccessMessage('No Data Found','error');
+      }
+    }), (error: any) => {
+      console.log('Error:', error);
+    }
+  }
   openDialog(): void {
 
     this.dialogService.openDialog('Agent Information', this.fields, '').subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
-        let agentObj: Agent = {
+        let agentObj: Users = {
           firstName: result.firstName,
           lastName: result.lastName,
           mobileNumber: result.mobileNumber,
@@ -155,10 +172,10 @@ export class AgentProfilesComponent implements OnInit {
             country: result.country,
             state: result.state,
             taluka: result.taluka,
-            type: result.address_type
+            type: result.type
           }
         }
-        this.agentService.addAgents(agentObj).subscribe((data) => {
+        this.userService.addUsers(agentObj).subscribe((data) => {
           console.log('Add Succesfully');
         })
       }
@@ -167,7 +184,10 @@ export class AgentProfilesComponent implements OnInit {
 
   onEdit(value: any) {
     console.log('Edit Event', value);
-    this.dialogService.openDialog('Edit Agent', this.fields, value)
+    this.dialogService.openDialog('Edit Agent', this.fields, value).subscribe((response: any) => {
+      console.log('EDIT RESPONSE: ', response);
+      //this.dataSource = response;
+    });
   }
 
   onDelete(event: any) {

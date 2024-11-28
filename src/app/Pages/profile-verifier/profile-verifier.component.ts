@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TableComponent } from '../../Shared/table/table.component';
 import { MatButtonModule } from '@angular/material/button';
-import { verifier } from '../../Core/Interfaces/profileVerify';
 import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialog.service';
 import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ProfileVerifierService } from '../../Core/Services/Profile-verifier/profile-verifier.service';
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
+import { Users } from '../../Core/Interfaces/Users';
+import { UserService } from '../../Core/Services/Users/User.service';
 
 
 interface TableColumn {
@@ -36,7 +36,7 @@ export class ProfileVerifierComponent implements OnInit {
   ];
   displayedColumnKeys = this.displayedColumns.map(column => column.key);
 
-  profileVerifyList: verifier[] = [];
+  profileVerifyList: Users[] = [];
 
   public fields: any[] = [
     {
@@ -123,7 +123,7 @@ export class ProfileVerifierComponent implements OnInit {
 
 
   constructor(private dialogService: ReusableDialogService, private fb: FormBuilder,
-    private profileVerifier: ProfileVerifierService,
+    private profileVerifier: UserService,
     private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -162,7 +162,7 @@ export class ProfileVerifierComponent implements OnInit {
     this.dialogService.openDialog('Profile Verifier Information', this.fields, this.profileForm).subscribe(value => {
       if (value) {
         // console.log('Dialog result:', value);
-        let userObj: verifier = {
+        let userObj: Users = {
           firstName: value.firstName,
           lastName: value.lastName,
           mobileNumber: value.mobileNumber,
@@ -184,8 +184,8 @@ export class ProfileVerifierComponent implements OnInit {
             type: value.type
           }
         }
-        this.http.post('http://localhost:8443/profile/adduser', userObj).subscribe((res: dataRequestResult) => {
-          if (res.success) {
+        this.http.post('http://localhost:8443/profile/adduser', userObj).subscribe((res: any) => {
+          if (res) {
             alert("Creted Profile Verifier Successfully");
           } else {
             alert("Error");
@@ -197,7 +197,7 @@ export class ProfileVerifierComponent implements OnInit {
   }
 
 
-  onEdit(element: verifier) {
+  onEdit(element: Users) {
     // const formValues = {
     //   firstName: element.firstName,
     //   lastName: element.lastName,
@@ -224,7 +224,7 @@ export class ProfileVerifierComponent implements OnInit {
   }
 
 
-  onDelete(element: verifier) {
+  onDelete(element: Users) {
     // console.log('Delete:', element);
     // // Implement your delete logic here (e.g., confirm deletion and remove from data source)
     // const index = this.profileVerifyList.indexOf(element);
@@ -243,7 +243,7 @@ export class ProfileVerifierComponent implements OnInit {
 
   getAllusers() {
     // this.localStorageData = JSON.parse(localStorage.getItem('userValue') || '{}');
-    this.profileVerifier.getUserList(9898989898).subscribe((response) => {
+    this.profileVerifier.getAllUsers(9898989898).subscribe((response) => {
       if (response && response.result?.length > 0) {
         if (response?.result?.userType !== 'PROFILE_VERIFIER') {
           this.profileVerifyList = response.result;

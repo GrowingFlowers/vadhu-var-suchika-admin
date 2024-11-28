@@ -1,10 +1,10 @@
 <div class="" fxLayout="column" fxLayoutGap="10px">
     <div class="" fxLayout="row" fxLayoutAlign="end">
-        <button mat-raised-button (click)="openDialog()">Add  Agent</button>
+        <button mat-raised-button (click)="openDialog()">Add Agent</button>
     </div>
-    
+
     <div class="">
-        <app-table  [displayedColumns]="displayedColumns" [dataSource]="dataSource" (edit)="onEdit($event)"
-                (delete)="onDelete($event)"></app-table>
+        <app-table [displayedColumns]="displayedColumns" [dataSource]="dataSource" (edit)="onEdit($event)"
+            (delete)="onDelete($event)"></app-table>
     </div>
 </div>

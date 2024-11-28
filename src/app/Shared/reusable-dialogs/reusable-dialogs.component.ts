@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import { CommonService } from '../../Core/Services/common.service';
+import { CommonService } from '../../Core/Services/Common/common.service';
 
 
 @Component({
@@ -27,6 +27,8 @@ export class ReusableDialogsComponent {
   stateData: any[] = [];
   districtData: any[] = [];
   talukaData: any[] = [];
+  buttonName:string = 'Add';
+  bindData:any;
 
   constructor(
     private fb: FormBuilder,
@@ -36,8 +38,6 @@ export class ReusableDialogsComponent {
   ) {}
 
   ngOnInit(): void {
-
-    console.log('ELEMENT: ', this.data.element);
 
     this.title = this.data.title;
     this.fields = this.data.fields;
@@ -60,24 +60,25 @@ export class ReusableDialogsComponent {
     this.dialogForm = this.fb.group(formGroupConfig);
 
     if (this.data.elements) {
+      this.buttonName = 'Update';
       const addressData = this.data.elements.addressVO;
 
-      const bindData  = {...this.data.elements}
+      this.bindData  = {...this.data.elements}
 
       if (addressData) {
         Object.keys(addressData).forEach((key) => {
           // If there's a corresponding form field for address data, patch it
           if (this.dialogForm.contains(key)) {
-            bindData[key] = addressData[key];
+            this.bindData[key] = addressData[key];
           } else {
             // If the address data has fields not in the form, add them dynamically
-            const addressFieldName = `address.${key}`;
-            bindData[addressFieldName] = addressData[key];
+            const addressFieldName = `${key}`;
+            this.bindData[addressFieldName] = addressData[key];
           }
         });
       }
       //this.dialogForm.patchValue(this.data.elements);
-      this.dialogForm.patchValue(bindData);
+      this.dialogForm.patchValue(this.bindData);
       //this.dialogForm.patchValue(this.data.elements);
     }
 
@@ -87,6 +88,7 @@ export class ReusableDialogsComponent {
   
   // Load countries from the common service
   loadCountries(): void {
+    console.log('Country Patch: ',this.bindData);
     const countryData = this.commonService.getAllData();
     this.countryData = countryData.map((country) => ({
       label: country.name,
@@ -97,6 +99,10 @@ export class ReusableDialogsComponent {
     if (countryField) {
       countryField.options = this.countryData;
     }
+
+    this.dialogForm.patchValue({
+      country: this.bindData.country
+    });
   }
 
   // Set up listeners for cascading dropdowns

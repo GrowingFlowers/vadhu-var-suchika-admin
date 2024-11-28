@@ -1,4 +1,4 @@
-export interface Agent {
+export interface Users {
     firstName?: string,
     lastName?: string,
     mobileNumber?: string,
