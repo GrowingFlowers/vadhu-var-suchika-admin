@@ -3,7 +3,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialog.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TableComponent } from "../../Shared/table/table.component";
-import { AgentService } from '../../Core/Services/Agent/agent.service';
 import { TableColumn } from '../../Core/Interfaces/table-column';
 import { Users } from '../../Core/Interfaces/Users';
 import { UserService } from '../../Core/Services/Users/User.service';
