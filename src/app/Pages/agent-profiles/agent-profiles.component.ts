@@ -4,6 +4,7 @@ import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialo
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Agent } from '../../Core/Interfaces/agent';
 import { TableComponent } from "../../Shared/table/table.component";
+import { AgentService } from '../../Core/Services/Agent/agent.service';
 interface TableColumn {
   key: string;
   displayName: string;
@@ -38,7 +39,10 @@ export class AgentProfilesComponent implements OnInit {
       name: 'mobileNumber', label: 'Mobile Number', type: 'input', inputType: 'text', placeholder: 'Enter your mobile number', required: true
     },
     {
-      name: 'address', label: 'Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter address', required: true
+      name: 'address1', label: 'Permant Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter Permant address', required: true
+    },
+    {
+      name: 'address2', label: 'Current Address', type: 'textarea', inputType: 'textarea', placeholder: 'Enter Current address', required: true
     },
     {
       name: 'area', label: 'Area', type: 'input', inputType: 'text', placeholder: 'Enter Area', required: true
@@ -67,10 +71,14 @@ export class AgentProfilesComponent implements OnInit {
     {
       name: 'taluka', label: 'Taluka', type: 'dropdown', options: [], placeholder: 'Select Taluka', required: true, dependsOn: 'district'
     },
+    {
+      name: 'address_type', label: 'Residentioal Type', type: 'input', inputType: 'text', placeholder: 'Enter Residentioal Type', required: true
+    },
   ];
   dataSource: any;
   constructor(
-    private dialogService: ReusableDialogService
+    private dialogService: ReusableDialogService,
+    private agentService: AgentService
   ) { }
 
   users: Agent[] = [
@@ -125,16 +133,41 @@ export class AgentProfilesComponent implements OnInit {
 
   openDialog(): void {
 
-    this.dialogService.openDialog('Agent Information', this.fields,'').subscribe(result => {
+    this.dialogService.openDialog('Agent Information', this.fields, '').subscribe(result => {
       if (result) {
         console.log('Dialog result:', result);
+        let agentObj: Agent = {
+          firstName: result.firstName,
+          lastName: result.lastName,
+          mobileNumber: result.mobileNumber,
+          otp: '',
+          agentMobileNumber: '',
+          type: 'AGENT',
+          addressVO: {
+            address1: result.address1,
+            address2: result.address2,
+            area: result.area,
+            city: result.city,
+            contact1: result.contact1,
+            contact2: result.contact2,
+            destrict: result.district,
+            pinCode: result.pinCode,
+            country: result.country,
+            state: result.state,
+            taluka: result.taluka,
+            type: result.address_type
+          }
+        }
+        this.agentService.addAgents(agentObj).subscribe((data) => {
+          console.log('Add Succesfully');
+        })
       }
     });
   }
 
   onEdit(value: any) {
     console.log('Edit Event', value);
-    this.dialogService.openDialog('Edit Agent',this.fields,value)
+    this.dialogService.openDialog('Edit Agent', this.fields, value)
   }
 
   onDelete(event: any) {
