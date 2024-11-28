@@ -7,6 +7,7 @@ import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from
 import { HttpClient } from '@angular/common/http';
 import { ProfileVerifierService } from '../../Core/Services/Profile-verifier/profile-verifier.service';
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
+import { UserService } from '../../Core/Services/User/user.service';
 
 
 interface TableColumn {
@@ -23,7 +24,7 @@ interface TableColumn {
   styleUrl: './profile-verifier.component.css'
 })
 export class ProfileVerifierComponent implements OnInit {
-  profileForm!: FormGroup;
+  profileForm:any;
 
   displayedColumns: TableColumn[] = [
     { key: 'firstName', displayName: 'First Name' },
@@ -61,14 +62,15 @@ export class ProfileVerifierComponent implements OnInit {
       name: 'city', label: 'City', type: 'input', inputType: 'text', placeholder: 'Enter City', required: true
     },
     {
+      name: 'pincode', label: 'Pin Code', type: 'input', inputType: 'text', placeholder: 'Enter valid pincode', required: true
+    },
+    {
       name: 'contact1', label: 'Contact 1', type: 'input', inputType: 'text', placeholder: 'Enter your valid contact number', required: true
     },
     {
       name: 'contact2', label: 'Contact 2', type: 'input', inputType: 'text', placeholder: 'Enter your valid another contact number', required: true
     },
-    {
-      name: 'pincode', label: 'Pin Code', type: 'input', inputType: 'text', placeholder: 'Enter valid pincode', required: true
-    },
+    
     {
       name: 'country', label: 'Country', type: 'dropdown', options: [], placeholder: 'Select Country', required: true
     },
@@ -81,39 +83,42 @@ export class ProfileVerifierComponent implements OnInit {
     {
       name: 'taluka', label: 'Taluka', type: 'dropdown', options: [], placeholder: 'Select Taluka', required: true, dependsOn: 'district'
     },
+    // {
+    //   name: 'type', label: 'Address Type', type: 'dropdown', options: ["Current","Permanent"], placeholder: 'Select Address Type', required: true
+    // },
   ];
 
 
   constructor(private dialogService: ReusableDialogService, private fb: FormBuilder,
-    private profileVerifier: ProfileVerifierService,
+    private profileVerifier: ProfileVerifierService,private userService:UserService,
     private http: HttpClient) { }
 
   ngOnInit(): void {
 
     this.getAllusers();
     // Initialize the form group
-    this.profileForm = this.fb.group({
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required], 
-      mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]], 
-      otp: [''], 
-      type: ['PROFILE_VERIFIER', Validators.required], 
-      addressVO: this.fb.group({ 
-        address1: ['', Validators.required], 
-        address2: [''],
-        area: ['', Validators.required], 
-        city: ['', Validators.required], 
-        contact1: ['', Validators.required], 
-        contact2: ['', Validators.required], 
-        destrict: ['', Validators.required], 
-        pinCode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]], 
-        country: ['', Validators.required], 
-        state: ['', Validators.required], 
-        taluka: ['', Validators.required], 
-        type: ['', Validators.required] 
-      }),
-      createdBy: ['ADMIN'], 
-    });
+    // this.profileForm = this.fb.group({
+    //   firstName: ['', Validators.required],
+    //   lastName: ['', Validators.required], 
+    //   mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]], 
+    //   otp: [''], 
+    //   type: ['', Validators.required], 
+    //   addressVO: this.fb.group({ 
+    //     address1: ['', Validators.required], 
+    //     address2: [''],
+    //     area: ['', Validators.required], 
+    //     city: ['', Validators.required], 
+    //     contact1: ['', Validators.required], 
+    //     contact2: ['', Validators.required], 
+    //     destrict: ['', Validators.required], 
+    //     pinCode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]], 
+    //     country: ['', Validators.required], 
+    //     state: ['', Validators.required], 
+    //     taluka: ['', Validators.required], 
+    //     type: ['', Validators.required] 
+    //   }),
+     
+    // });
 
   }
 
@@ -121,7 +126,7 @@ export class ProfileVerifierComponent implements OnInit {
     
 
     // Open the dialog and pass the form
-    this.dialogService.openDialog('Profile Verifier Information', this.fields, this.profileForm).subscribe(value => {
+    this.dialogService.openDialog('Profile Verifier Information', this.fields, '').subscribe(value => {
       if (value) {
         // console.log('Dialog result:', value);
         let userObj: verifier = {
@@ -129,8 +134,7 @@ export class ProfileVerifierComponent implements OnInit {
           lastName: value.lastName,
           mobileNumber: value.mobileNumber,
           otp: '',
-          // agentMobileNumber: this.localStorageData.mobileNumber,
-          type: value.type,
+          type: 'PROFILE_VERIFIER',
           addressVO: {
             address1: value.address1,
             address2: value.address2,
@@ -146,9 +150,10 @@ export class ProfileVerifierComponent implements OnInit {
             type: value.type
           }
         }
-        this.http.post('http://localhost:8443/profile/adduser', userObj).subscribe((res: dataRequestResult) => {
+        this.userService.addUser( userObj).subscribe((res: dataRequestResult) => {
           if (res.success) {
             alert("Creted Profile Verifier Successfully");
+            this.getAllusers();
           } else {
             alert("Error");
           }
