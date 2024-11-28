@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
@@ -19,9 +19,9 @@ import {ArrayToDateConversionPipe} from '../../Core/Pipe/array-to-date-conversio
   templateUrl: './table.component.html',
   styleUrl: './table.component.css'
 })
-export class TableComponent  implements AfterViewInit{
+export class TableComponent  implements  AfterViewInit{
 
-  public tableDataSource = new MatTableDataSource<any>(); 
+  tableDataSource = new MatTableDataSource<any>(); 
   @Input() displayedColumns: TableColumn[] = [];
   @Input() set dataSource(data: any[]) {
     this.tableDataSource.data = data;

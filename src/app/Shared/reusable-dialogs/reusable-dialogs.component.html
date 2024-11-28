@@ -111,5 +111,5 @@
 <mat-dialog-actions align="end">
     <button mat-stroked-button (click)="onCancel()" color="primary">Cancel</button>
     <button mat-raised-button color="primary" [mat-dialog-close]="dialogForm.value"
-        [disabled]="!dialogForm.valid">Submit</button>
+        [disabled]="!dialogForm.valid">{{buttonName}}</button>
 </mat-dialog-actions>

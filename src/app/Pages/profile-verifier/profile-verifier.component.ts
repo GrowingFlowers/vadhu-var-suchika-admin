@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { TableComponent } from '../../Shared/table/table.component';
 import { MatButtonModule } from '@angular/material/button';
-import { verifier } from '../../Core/Interfaces/profileVerify';
 import { ReusableDialogService } from '../../Core/Services/Dialog/reusable-dialog.service';
 import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { ProfileVerifierService } from '../../Core/Services/Profile-verifier/profile-verifier.service';
+
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
-import { UserService } from '../../Core/Services/User/user.service';
+import { Users } from '../../Core/Interfaces/Users';
+import { UserService } from '../../Core/Services/Users/User.service';
+// import { TableColumn } from '../../Core/Interfaces/table-column';
 
 
 interface TableColumn {
   key: string;
   displayName: string;
 }
+
 
 
 @Component({
@@ -37,7 +39,7 @@ export class ProfileVerifierComponent implements OnInit {
   ];
   displayedColumnKeys = this.displayedColumns.map(column => column.key);
 
-  profileVerifyList: verifier[] = [];
+  profileVerifyList: Users[] = [];
 
   fields = [
     {
@@ -90,35 +92,12 @@ export class ProfileVerifierComponent implements OnInit {
 
 
   constructor(private dialogService: ReusableDialogService, private fb: FormBuilder,
-    private profileVerifier: ProfileVerifierService,private userService:UserService,
+    private userService: UserService,
     private http: HttpClient) { }
 
   ngOnInit(): void {
 
     this.getAllusers();
-    // Initialize the form group
-    // this.profileForm = this.fb.group({
-    //   firstName: ['', Validators.required],
-    //   lastName: ['', Validators.required], 
-    //   mobileNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]], 
-    //   otp: [''], 
-    //   type: ['', Validators.required], 
-    //   addressVO: this.fb.group({ 
-    //     address1: ['', Validators.required], 
-    //     address2: [''],
-    //     area: ['', Validators.required], 
-    //     city: ['', Validators.required], 
-    //     contact1: ['', Validators.required], 
-    //     contact2: ['', Validators.required], 
-    //     destrict: ['', Validators.required], 
-    //     pinCode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]], 
-    //     country: ['', Validators.required], 
-    //     state: ['', Validators.required], 
-    //     taluka: ['', Validators.required], 
-    //     type: ['', Validators.required] 
-    //   }),
-     
-    // });
 
   }
 
@@ -129,7 +108,7 @@ export class ProfileVerifierComponent implements OnInit {
     this.dialogService.openDialog('Profile Verifier Information', this.fields, '').subscribe(value => {
       if (value) {
         // console.log('Dialog result:', value);
-        let userObj: verifier = {
+        let userObj: Users = {
           firstName: value.firstName,
           lastName: value.lastName,
           mobileNumber: value.mobileNumber,
@@ -150,7 +129,7 @@ export class ProfileVerifierComponent implements OnInit {
             type: value.type
           }
         }
-        this.userService.addUser( userObj).subscribe((res: dataRequestResult) => {
+        this.userService.addUsers( userObj).subscribe((res: dataRequestResult) => {
           if (res.success) {
             alert("Creted Profile Verifier Successfully");
             this.getAllusers();
@@ -164,13 +143,13 @@ export class ProfileVerifierComponent implements OnInit {
   }
 
 
-  onEdit(element: verifier) {
+  onEdit(element: Users) {
  
     this.dialogService.openDialog('Edit Profile Verifier', this.fields, element);
   }
 
 
-  onDelete(element: verifier) {
+  onDelete(element: Users) {
    
     console.log('Delete:', element);
     const index = this.profileVerifyList.indexOf(element);
@@ -182,16 +161,14 @@ export class ProfileVerifierComponent implements OnInit {
 
   getAllusers() {
     // this.localStorageData = JSON.parse(localStorage.getItem('userValue') || '{}');
-    this.profileVerifier.getUserList(9898989898).subscribe((response) => {
+    this.userService.getAllUsers(9898989898).subscribe((response:any) => {
       if (response && response.result?.length > 0) {
         if (response?.result?.userType !== 'PROFILE_VERIFIER') {
           this.profileVerifyList = response.result;
-          // console.log("List : -",this.profileVerifyList)
-          // this.isSuccess = true;
-          // this.getSuccessMessage('User Data Fetch Successfully','success');
+          
         }
       } else {
-        // this.getSuccessMessage('No Data Found','error');
+        console.log("Error found in get all users")
       }
     }), (error: any) => {
       console.log('Error:', error);
