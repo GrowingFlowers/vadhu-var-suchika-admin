@@ -36,6 +36,9 @@ export class ReusableDialogsComponent {
   ) {}
 
   ngOnInit(): void {
+
+    console.log('ELEMENT: ', this.data.element);
+
     this.title = this.data.title;
     this.fields = this.data.fields;
    
@@ -57,8 +60,24 @@ export class ReusableDialogsComponent {
     this.dialogForm = this.fb.group(formGroupConfig);
 
     if (this.data.elements) {
-      this.dialogForm.patchValue(this.data.elements);
-      
+      const addressData = this.data.elements.addressVO;
+
+      const bindData  = {...this.data.elements}
+
+      if (addressData) {
+        Object.keys(addressData).forEach((key) => {
+          // If there's a corresponding form field for address data, patch it
+          if (this.dialogForm.contains(key)) {
+            bindData[key] = addressData[key];
+          } else {
+            // If the address data has fields not in the form, add them dynamically
+            const addressFieldName = `address.${key}`;
+            bindData[addressFieldName] = addressData[key];
+          }
+        });
+      }
+      //this.dialogForm.patchValue(this.data.elements);
+      this.dialogForm.patchValue(bindData);
       //this.dialogForm.patchValue(this.data.elements);
     }
 

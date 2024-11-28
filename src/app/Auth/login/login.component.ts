@@ -30,12 +30,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', Validators.required]
     });
   }
   onSubmit() {
-    if (this.loginForm.valid) {
+    if (this.loginForm.valid && this.loginForm.value.email ==='admin' && this.loginForm.value.password ==='admin') {
       // Handle login logic here
       console.log('Login:', this.loginForm.value);
       this.router.navigate(['/Agent'])

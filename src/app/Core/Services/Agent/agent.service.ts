@@ -15,4 +15,8 @@ export class AgentService extends ApiService {
   getAllAgents():Observable<any[]>{
     return this.http.get<any[]>(this.apiURL, { headers: this.getHeaders() });
   }
+
+  addAgents(data:any):Observable<any>{
+    return this.http.post(`${this.apiURL}/profile/adduser`,data);
+  }
 }
