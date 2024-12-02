@@ -81,14 +81,14 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('district')" fxFlex>
+        <mat-form-field appearance="outline" class="full-width" *ngIf="dialogForm.get('destrict')" fxFlex>
             <mat-label>District</mat-label>
-            <mat-select formControlName="district">
+            <mat-select formControlName="destrict">
                 <mat-option *ngFor="let option of districtData" [value]="option.value">
                     {{ option.label }}
                 </mat-option>
             </mat-select>
-            <mat-error *ngIf="dialogForm.get('district')?.hasError('required')">
+            <mat-error *ngIf="dialogForm.get('destrict')?.hasError('required')">
                 Please select a district.
             </mat-error>
         </mat-form-field>
@@ -111,5 +111,5 @@
 <mat-dialog-actions align="end">
     <button mat-stroked-button (click)="onCancel()" color="primary">Cancel</button>
     <button mat-raised-button color="primary" [mat-dialog-close]="dialogForm.value"
-        [disabled]="!dialogForm.valid">{{buttonName}}</button>
+        [disabled]="!dialogForm.valid">{{ buttonName }}</button>
 </mat-dialog-actions>

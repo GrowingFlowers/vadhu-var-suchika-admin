@@ -77,9 +77,8 @@ export class ReusableDialogsComponent {
           }
         });
       }
-      //this.dialogForm.patchValue(this.data.elements);
+     
       this.dialogForm.patchValue(this.bindData);
-      //this.dialogForm.patchValue(this.data.elements);
     }
 
     this.loadCountries();
@@ -88,7 +87,7 @@ export class ReusableDialogsComponent {
   
   // Load countries from the common service
   loadCountries(): void {
-    console.log('Country Patch: ',this.bindData);
+    debugger;
     const countryData = this.commonService.getAllData();
     this.countryData = countryData.map((country) => ({
       label: country.name,
@@ -100,26 +99,27 @@ export class ReusableDialogsComponent {
       countryField.options = this.countryData;
     }
 
-    this.dialogForm.patchValue({
-      country: this.bindData.country
-    });
+    // this.dialogForm.patchValue({
+    //   country: this.bindData.country
+    // });
   }
 
   // Set up listeners for cascading dropdowns
   setupListeners(): void {
+    debugger;
     this.dialogForm.get('country')?.valueChanges.subscribe((countryValue) => {
       this.loadStates(countryValue);
       this.dialogForm.get('state')?.reset();
       this.dialogForm.get('district')?.reset();
       this.dialogForm.get('taluka')?.reset();
     });
-
+    debugger;
     this.dialogForm.get('state')?.valueChanges.subscribe((stateValue) => {
       this.loadDistricts(stateValue);
       this.dialogForm.get('district')?.reset();
       this.dialogForm.get('taluka')?.reset();
     });
-
+    debugger;
     this.dialogForm.get('district')?.valueChanges.subscribe((districtValue) => {
       this.loadTalukas(districtValue);
       this.dialogForm.get('taluka')?.reset();
@@ -128,22 +128,28 @@ export class ReusableDialogsComponent {
 
   // Load states based on the selected country
   loadStates(countryValue: string): void {
-
+    debugger;
     const countryData = this.commonService.getAllData();
     const selectedCountry = countryData.find(
       (country) => country.value === countryValue
     );
-    const stateField = this.fields.find((field) => field.name === 'state');
-    if (stateField && selectedCountry) {
+   
+    if (selectedCountry) {
       this.stateData = selectedCountry.states.map((state) => ({
         label: state.name,
         value: state.value,
       }));
     }
+
+    const stateField = this.fields.find((field) => field.name === 'state');
+    if (stateField && selectedCountry) {
+      stateField.options = this.stateData; // Update dropdown options dynamically
+    }
   }
 
   // Load districts based on the selected state
   loadDistricts(stateValue: string): void {
+    debugger;
     const countryData = this.commonService.getAllData();
     const selectedCountry = countryData.find((country) =>
       country.states.find((state) => state.value === stateValue)
@@ -163,6 +169,7 @@ export class ReusableDialogsComponent {
 
   // Load talukas based on the selected district
   loadTalukas(districtValue: string): void {
+    debugger;
     const countryData = this.commonService.getAllData();
     const selectedCountry = countryData.find((country) =>
       country.states.find((state) =>

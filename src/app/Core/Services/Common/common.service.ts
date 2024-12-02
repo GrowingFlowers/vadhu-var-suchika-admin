@@ -11,7 +11,7 @@ constructor() { }
 getAllData() {
   return [
     {
-      name: 'India', value: 'IND',
+      name: 'India', value: 'India',
       states: [
         {
           name: "Maharashtra", value: "Maharashtra",

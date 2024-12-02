@@ -6,3 +6,83 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .toolbar-section{
     background-color: lightgrey;
 }
+
+:root {
+    --success-snackbar-bg: #01dc6a; /* Green for success */
+    --error-snackbar-bg: #fe3451;  /* Red for error */
+    --snackbar-text-color: whitesmoke; /* Text color */
+    --snackbar-border-radius: 8px; /* Rounded corners */
+}
+
+/* General Snackbar Styles */
+.success-snackbar,
+.error-snackbar,
+.mat-snackbar {
+    background-color: var(--success-snackbar-bg); /* Default to success color */
+    color: var(--snackbar-text-color);
+    overflow: hidden;
+    padding: 12px 16px;
+    border-radius: var(--snackbar-border-radius);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Error Snackbar Specific Styles */
+.error-snackbar,
+.mat-snackbar.error-snackbar {
+    background-color: var(--error-snackbar-bg);
+}
+
+/* Success Snackbar Icon Styles */
+.success-snackbar .mat-icon,
+.mat-snackbar.success-snackbar .mat-icon {
+    color: var(--success-snackbar-bg);
+    font-size: 24px;
+}
+
+/* Error Snackbar Icon Styles */
+.error-snackbar .mat-icon,
+.mat-snackbar.error-snackbar .mat-icon {
+    color: var(--error-snackbar-bg);
+    font-size: 24px;
+}
+
+/* Glowing Circle Effect */
+.success-snackbar::before,
+.error-snackbar::before {
+    content: '';
+    border-radius: 50%;
+    background: var(--success-snackbar-bg);
+    filter: blur(56px);
+    opacity: 0.7;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.error-snackbar::before {
+    background: var(--error-snackbar-bg);
+}
+
+/* Hover Effects */
+.success-snackbar:hover::before,
+.error-snackbar:hover::before {
+    transform: scale(1.1);
+    opacity: 1;
+}
+
+/* Specific Mat Snackbar Overrides */
+.mat-snackbar {
+    --mdc-snackbar-container-color: var(--success-snackbar-bg);
+    --mdc-snackbar-supporting-text-color: var(--snackbar-text-color);
+    --mdc-snackbar-container-shape: var(--snackbar-border-radius);
+}
+
+/* Ensure mat-snackbar matches the success/error colors when reused */
+.mat-snackbar.success-snackbar {
+    background-color: var(--success-snackbar-bg);
+}
+
+.mat-snackbar.error-snackbar {
+    background-color: var(--error-snackbar-bg);
+}
+
