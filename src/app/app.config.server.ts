@@ -9,6 +9,7 @@ const serverConfig: ApplicationConfig = {
 
   providers: [
     provideServerRendering(),
+    
    
   ]
 };

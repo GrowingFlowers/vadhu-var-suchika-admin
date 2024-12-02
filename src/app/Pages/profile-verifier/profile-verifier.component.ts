@@ -101,13 +101,27 @@ export class ProfileVerifierComponent implements OnInit {
 
   }
 
-  openDialog(): void {
-    
+  getAllusers() {
+    // this.localStorageData = JSON.parse(localStorage.getItem('userValue') || '{}');
+    this.userService.getAllUsers(9898989898).subscribe((response:any) => {
+      if (response && response.result?.length > 0) {
+        if (response?.result?.userType !== 'PROFILE_VERIFIER') {
+          this.profileVerifyList = response.result;
+          
+        }
+      } else {
+        console.log("Error found in get all users")
+      }
+    }), (error: any) => {
+      console.log('Error:', error);
+    }
+  }
 
-    // Open the dialog and pass the form
+  openDialog(): void {
+
     this.dialogService.openDialog('Profile Verifier Information', this.fields, '').subscribe(value => {
       if (value) {
-        // console.log('Dialog result:', value);
+       
         let userObj: Users = {
           firstName: value.firstName,
           lastName: value.lastName,
@@ -144,8 +158,42 @@ export class ProfileVerifierComponent implements OnInit {
 
 
   onEdit(element: Users) {
- 
-    this.dialogService.openDialog('Edit Profile Verifier', this.fields, element);
+
+    this.dialogService.openDialog('Edit Profile Verifier', this.fields, element).subscribe((value:any)=>{
+      console.log("on edit"+JSON.stringify(value))
+      if(value){
+       
+        let userObj:Users = {
+          firstName: value.firstName,
+          lastName: value.lastName,
+          mobileNumber: value.mobileNumber,
+          otp: '',
+          type: value.type,
+          addressVO: {
+            address1: value.address1,
+            address2: value.address2,
+            area: value.area,
+            city: value.city,
+            contact1: value.contact1,
+            contact2: value.contact2,
+            destrict: value.district,
+            pinCode: value.pinCode,
+            state: value.state,
+            taluka: value.taluka,
+            type: value.address_type
+          }
+        }
+
+        this.http.post("http://localhost:8443/profile/updateUser",userObj).subscribe((response:any)=>{
+         if(response.success){
+          alert("updated");
+          this.getAllusers();
+         }else{
+          alert("error Not updated pls try again")
+         }
+        })
+      }
+    })
   }
 
 
@@ -159,19 +207,5 @@ export class ProfileVerifierComponent implements OnInit {
 
   }
 
-  getAllusers() {
-    // this.localStorageData = JSON.parse(localStorage.getItem('userValue') || '{}');
-    this.userService.getAllUsers(9898989898).subscribe((response:any) => {
-      if (response && response.result?.length > 0) {
-        if (response?.result?.userType !== 'PROFILE_VERIFIER') {
-          this.profileVerifyList = response.result;
-          
-        }
-      } else {
-        console.log("Error found in get all users")
-      }
-    }), (error: any) => {
-      console.log('Error:', error);
-    }
-  }
+ 
 }
