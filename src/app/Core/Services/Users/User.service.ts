@@ -19,4 +19,5 @@ getAllUsers(data:any):Observable<any>{
 addUsers(data:any):Observable<any>{
   return this.http.post(`${this.apiURL}/profile/adduser`,data);
 }
+
 }

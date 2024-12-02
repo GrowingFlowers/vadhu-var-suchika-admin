@@ -48,6 +48,20 @@
           </td>
         </ng-container>
 
+        <!-- new code -->
+        <!-- <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+          <td mat-cell *matCellDef="let element" class="text-center action-cell" fxLayout="row" fxLayoutGap="14px"
+              fxLayoutAlign="center center">
+              <button mat-icon-button color="primary" (click)="onEdit(element)">
+                  <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="onDelete(element)">
+                  <mat-icon>delete</mat-icon>
+              </button>
+          </td>
+      </ng-container> -->
+
         <!-- Header and Row Definitions -->
         <tr mat-header-row *matHeaderRowDef="displayedColumnKeys;sticky: true"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumnKeys;"></tr>
