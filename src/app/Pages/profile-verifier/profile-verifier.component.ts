@@ -6,7 +6,7 @@ import { FormBuilder, FormControl, FormControlName, FormGroup, Validators } from
 import { HttpClient } from '@angular/common/http';
 
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
-import { Users } from '../../Core/Interfaces/Users';
+import { Users } from '../../Core/Interfaces/users';
 import { UserService } from '../../Core/Services/Users/User.service';
 // import { TableColumn } from '../../Core/Interfaces/table-column';
 

@@ -23,12 +23,12 @@ export class ReusableDialogsComponent {
   dialogForm!: FormGroup;
   title!: string;
   fields: any[] = [];
+  buttonName: string = 'Add';
+
   countryData: any[] = [];
   stateData: any[] = [];
   districtData: any[] = [];
   talukaData: any[] = [];
-  buttonName:string = 'Add';
-  bindData:any;
 
   constructor(
     private fb: FormBuilder,
@@ -38,10 +38,10 @@ export class ReusableDialogsComponent {
   ) {}
 
   ngOnInit(): void {
-
     this.title = this.data.title;
     this.fields = this.data.fields;
-   
+
+    // Initialize form
     const formGroupConfig: any = {};
     this.fields.forEach((field) => {
       const validations = [];
@@ -61,139 +61,64 @@ export class ReusableDialogsComponent {
 
     if (this.data.elements) {
       this.buttonName = 'Update';
-      const addressData = this.data.elements.addressVO;
-
-      this.bindData  = {...this.data.elements}
-
-      if (addressData) {
-        Object.keys(addressData).forEach((key) => {
-          // If there's a corresponding form field for address data, patch it
-          if (this.dialogForm.contains(key)) {
-            this.bindData[key] = addressData[key];
-          } else {
-            // If the address data has fields not in the form, add them dynamically
-            const addressFieldName = `${key}`;
-            this.bindData[addressFieldName] = addressData[key];
-          }
-        });
-      }
-     
-      this.dialogForm.patchValue(this.bindData);
+      this.dialogForm.patchValue(this.data.elements);
     }
 
     this.loadCountries();
     this.setupListeners();
   }
-  
-  // Load countries from the common service
+
   loadCountries(): void {
-    debugger;
-    const countryData = this.commonService.getAllData();
-    this.countryData = countryData.map((country) => ({
+    this.countryData = this.commonService.getAllCountries().map((country) => ({
       label: country.name,
       value: country.value,
     }));
-
-    const countryField = this.fields.find((field) => field.name === 'country');
-    if (countryField) {
-      countryField.options = this.countryData;
-    }
-
-    // this.dialogForm.patchValue({
-    //   country: this.bindData.country
-    // });
   }
 
-  // Set up listeners for cascading dropdowns
-  setupListeners(): void {
+  loadStates(countryValue: string): void {
+    this.stateData = this.commonService.getStatesByCountry(countryValue).map((state) => ({
+      label: state.name,
+      value: state.value,
+    }));
+  }
+
+  loadDistricts(stateValue: string): void {
     debugger;
+    this.districtData = this.commonService.getDistrictsByState(stateValue).map((district:any) => ({
+      label: district.name,
+      value: district.value,
+    }));
+  }
+
+  loadTalukas(districtValue: string): void {
+    this.talukaData = this.commonService.getTalukasByDistrict(districtValue).map((taluka:any) => ({
+      label: taluka.name,
+      value: taluka.value,
+    }));
+  }
+
+  setupListeners(): void {
     this.dialogForm.get('country')?.valueChanges.subscribe((countryValue) => {
       this.loadStates(countryValue);
       this.dialogForm.get('state')?.reset();
-      this.dialogForm.get('district')?.reset();
+      this.dialogForm.get('destrict')?.reset();
       this.dialogForm.get('taluka')?.reset();
     });
-    debugger;
+
     this.dialogForm.get('state')?.valueChanges.subscribe((stateValue) => {
       this.loadDistricts(stateValue);
-      this.dialogForm.get('district')?.reset();
+      this.dialogForm.get('destrict')?.reset();
       this.dialogForm.get('taluka')?.reset();
     });
-    debugger;
+
     this.dialogForm.get('district')?.valueChanges.subscribe((districtValue) => {
       this.loadTalukas(districtValue);
       this.dialogForm.get('taluka')?.reset();
     });
   }
 
-  // Load states based on the selected country
-  loadStates(countryValue: string): void {
-    debugger;
-    const countryData = this.commonService.getAllData();
-    const selectedCountry = countryData.find(
-      (country) => country.value === countryValue
-    );
-   
-    if (selectedCountry) {
-      this.stateData = selectedCountry.states.map((state) => ({
-        label: state.name,
-        value: state.value,
-      }));
-    }
-
-    const stateField = this.fields.find((field) => field.name === 'state');
-    if (stateField && selectedCountry) {
-      stateField.options = this.stateData; // Update dropdown options dynamically
-    }
-  }
-
-  // Load districts based on the selected state
-  loadDistricts(stateValue: string): void {
-    debugger;
-    const countryData = this.commonService.getAllData();
-    const selectedCountry = countryData.find((country) =>
-      country.states.find((state) => state.value === stateValue)
-    );
-    const selectedState = selectedCountry?.states.find(
-      (state) => state.value === stateValue
-    );
-
-    const districtField = this.fields.find((field) => field.name === 'district');
-    if (districtField && selectedState) {
-      this.districtData = selectedState.districts.map((district) => ({
-        label: district.name,
-        value: district.name,
-      }));
-    }
-  }
-
-  // Load talukas based on the selected district
-  loadTalukas(districtValue: string): void {
-    debugger;
-    const countryData = this.commonService.getAllData();
-    const selectedCountry = countryData.find((country) =>
-      country.states.find((state) =>
-        state.districts.find((district) => district.name === districtValue)
-      )
-    );
-    const selectedState = selectedCountry?.states.find((state) =>
-      state.districts.find((district) => district.name === districtValue)
-    );
-    const selectedDistrict = selectedState?.districts.find(
-      (district) => district.name === districtValue
-    );
-
-    const talukaField = this.fields.find((field) => field.name === 'taluka');
-    if (talukaField && selectedDistrict) {
-      this.talukaData = selectedDistrict.talukas.map((taluka) => ({
-        label: taluka.name,
-        value: taluka.name,
-      }));
-    }
-  }
-
   onCancel(): void {
     this.dialogRef.close();
   }
-
+  
 }

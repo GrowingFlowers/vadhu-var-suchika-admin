@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TableComponent } from "../../Shared/table/table.component";
 import { TableColumn } from '../../Core/Interfaces/table-column';
 import { UserService } from '../../Core/Services/Users/User.service';
-import { Users } from '../../Core/Interfaces/Users';
+import { Users } from '../../Core/Interfaces/users';
 import { ToasterService } from '../../Core/Services/Toast/toaster.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from "../../Shared/loader/loader.component";
@@ -99,7 +99,7 @@ export class AgentProfilesComponent implements OnInit {
           this.dataSource = response.result;
           this.loading = false;
           this._snackbarService.openSuccessSnackBar('Fetch Agent Data');
-          
+
         }
       } else {
         this._snackbarService.openErroSnackBar('No Data Found');
