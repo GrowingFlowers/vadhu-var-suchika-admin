@@ -1,13 +1,25 @@
-.loader-container {
+/* .loader-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 90vh;
     width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
     background-color: rgba(255, 255, 255, 0.8);
+} */
 
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 90vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
 }

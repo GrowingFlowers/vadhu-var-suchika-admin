@@ -9,7 +9,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatMenuModule} from '@angular/material/menu';
 import { FooterComponent } from "../footer/footer.component";
 
-
 @Component({
   selector: 'app-navbar',
   standalone: true,
