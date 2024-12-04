@@ -8,8 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { dataRequestResult } from '../../Core/Interfaces/dataRequest';
 import { Users } from '../../Core/Interfaces/Users';
 import { UserService } from '../../Core/Services/Users/User.service';
+import { ToasterService } from '../../Core/Services/Toast/toaster.service';
 // import { TableColumn } from '../../Core/Interfaces/table-column';
-
+import { LoaderComponent } from '../../Shared/loader/loader.component';
+import { CommonModule } from '@angular/common';
 
 interface TableColumn {
   key: string;
@@ -21,13 +23,13 @@ interface TableColumn {
 @Component({
   selector: 'app-profile-verifier',
   standalone: true,
-  imports: [TableComponent, MatButtonModule],
+  imports: [TableComponent, MatButtonModule,LoaderComponent,CommonModule],
   templateUrl: './profile-verifier.component.html',
   styleUrl: './profile-verifier.component.css'
 })
 export class ProfileVerifierComponent implements OnInit {
   profileForm:any;
-
+  loading: boolean = true;
   displayedColumns: TableColumn[] = [
     { key: 'firstName', displayName: 'First Name' },
     { key: 'lastName', displayName: 'Last Name' },
@@ -92,7 +94,7 @@ export class ProfileVerifierComponent implements OnInit {
 
 
   constructor(private dialogService: ReusableDialogService, private fb: FormBuilder,
-    private userService: UserService,
+    private userService: UserService, public toasterService: ToasterService,
     private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -107,10 +109,11 @@ export class ProfileVerifierComponent implements OnInit {
       if (response && response.result?.length > 0) {
         if (response?.result?.userType !== 'PROFILE_VERIFIER') {
           this.profileVerifyList = response.result;
-          
+          this.loading = false;
+          this.toasterService.openSuccessSnackBar("The data is successfully fetched")
         }
       } else {
-        console.log("Error found in get all users")
+        this.toasterService.openErroSnackBar("Data Not Found")
       }
     }), (error: any) => {
       console.log('Error:', error);
@@ -145,10 +148,10 @@ export class ProfileVerifierComponent implements OnInit {
         }
         this.userService.addUsers( userObj).subscribe((res: dataRequestResult) => {
           if (res.success) {
-            alert("Creted Profile Verifier Successfully");
+            this.toasterService.openSuccessSnackBar("Profile Verifier Added Successfully...!")
             this.getAllusers();
           } else {
-            alert("Error");
+            this.toasterService.openErroSnackBar(res.result)
           }
         })
        
@@ -186,10 +189,11 @@ export class ProfileVerifierComponent implements OnInit {
 
         this.http.post("http://localhost:8443/profile/updateUser",userObj).subscribe((response:any)=>{
          if(response.success){
-          alert("updated");
+          this.toasterService.openSuccessSnackBar("Profile Verifier Added Successfully...!")
+
           this.getAllusers();
          }else{
-          alert("error Not updated pls try again")
+          this.toasterService.openErroSnackBar(response.result);
          }
         })
       }

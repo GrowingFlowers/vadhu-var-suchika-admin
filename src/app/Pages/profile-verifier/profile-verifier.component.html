@@ -1,4 +1,7 @@
-<div class="">
+<div *ngIf="loading; else content">
+    <app-loader [isLoading]="loading"></app-loader>
+  </div>
+  <ng-template #content>
     <div class="row">
         <div class="col-12">
             <div class="text-end">
@@ -12,4 +15,4 @@
         </div>
         </div>
     </div>
-</div>
+</ng-template>
